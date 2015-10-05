@@ -1,5 +1,9 @@
 fn main() {
-    let a = 2;
+    let res = shingles("sdsdsd".to_string(), "sdsdsd".to_string());
+    println!("{}", res);
+}
 
-    println!("Hello, world11111111111111!");
+fn shingles(x: String, y: String) -> f32 {
+    
+    3.22
 }
