@@ -4,4 +4,4 @@ version = "0.1.0"
 authors = ["Andrey Ivanov <lekkion@gmail.com>"]
 [dependencies]
 regex = "0.1.41"
-crc = "^1.0.0"
+rust-crypto = "^0.2"
