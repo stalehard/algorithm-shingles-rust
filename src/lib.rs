@@ -12,7 +12,7 @@ use crypto::md5::Md5;
 use crypto::digest::Digest;
 
 #[no_mangle]
-pub extern "C" fn count_same(text1: *const libc::c_char, text2: *const libc::c_char, length: usize) -> usize {
+pub extern "C" fn count_same(text1: *const libc::c_char, text2: *const libc::c_char, length: usize) -> f32 {
 	let buf1 = unsafe { CStr::from_ptr(text1).to_bytes() };
 	let text1_ = String::from_utf8(buf1.to_vec()).unwrap();
 
@@ -78,5 +78,12 @@ pub extern "C" fn count_same(text1: *const libc::c_char, text2: *const libc::c_c
 			}
 		}
 	}
-	same*100/min(shingles1.len(), shingles2.len())
+
+	same = same*100;
+	let length_text = min(shingles1.len(), shingles2.len());
+	let length_text_f = length_text as f32;
+	let same_f = same as f32;
+
+	let result: f32 = same_f/length_text_f;
+	result
 }
