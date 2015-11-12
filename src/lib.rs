@@ -31,7 +31,7 @@ pub extern "C" fn count_same(text1: *const libc::c_char, text2: *const libc::c_c
 		let text = canonize(text);
 		let split: Vec<&str> = text.split_whitespace().collect();
 		if(split.len()<len) {
-			panic!("The arguments are unacceptable");
+			return Vec::new();
 		}
 
 		let mut str: Vec<String> = Vec::new();
@@ -69,6 +69,9 @@ pub extern "C" fn count_same(text1: *const libc::c_char, text2: *const libc::c_c
 
 	let shingles1 = get_shingles(text1_, length);
 	let shingles2 = get_shingles(text2_, length);
+	if(shingles1.len()==0 || shingles2.len()==0) {
+		return 0 as f32;
+	}
 
 	let mut same = 0;
 	for item in &shingles1 {
