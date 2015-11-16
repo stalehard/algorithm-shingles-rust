@@ -1,4 +1,3 @@
-#![crate_type = "dylib"]
 extern crate libc;
 extern crate regex;
 extern crate crypto;
