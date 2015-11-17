@@ -11,12 +11,18 @@ use crypto::md5::Md5;
 use crypto::digest::Digest;
 
 #[no_mangle]
-pub extern "C" fn count_same(text1: *const libc::c_char, text2: *const libc::c_char, length: usize) -> f32 {
+pub extern "C" fn count_same(text1: *const libc::c_char, text2: *const libc::c_char, length: libc::uint16_t) -> f32 {
 	let buf1 = unsafe { CStr::from_ptr(text1).to_bytes() };
-	let text1_ = String::from_utf8(buf1.to_vec()).unwrap();
+	let text1_ = match String::from_utf8(buf1.to_vec()) {
+		Ok(val) => val,
+		Err(e) => String::new(),
+	};
 
 	let buf2 = unsafe { CStr::from_ptr(text2).to_bytes() };
-	let text2_ = String::from_utf8(buf2.to_vec()).unwrap();
+	let text2_ = match String::from_utf8(buf2.to_vec()) {
+		Ok(val) => val,
+		Err(e) => String::new(),
+	};
 
 	fn canonize(text: String) -> String {
 		let html = Regex::new(r"<[^>]*>|[:punct:]").unwrap();
@@ -26,17 +32,19 @@ pub extern "C" fn count_same(text1: *const libc::c_char, text2: *const libc::c_c
 		temp
 	}
 
-	fn get_shingles(text: String, len: usize) -> Vec<String> {
+	fn get_shingles(text: String, len: u16) -> Vec<String> {
 		let text = canonize(text);
 		let split: Vec<&str> = text.split_whitespace().collect();
-		if(split.len()<len) {
+		let length = len as usize;
+
+		if(split.len()<length) {
 			return Vec::new();
 		}
 
 		let mut str: Vec<String> = Vec::new();
-		for i in 0..(split.len()-len+1) {
+		for i in 0..(split.len()-length+1) {
 			let mut buf = String::new();
-			for y in i..i+len {
+			for y in i..i+length {
 				buf = buf + " " + split[y];
 			}
 
